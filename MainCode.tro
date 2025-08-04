@@ -1,0 +1,236 @@
+
+//7
+var
+form : TclForm;
+tradio: TCLRadioButton;
+{
+  form= TclForm.Create(self);
+  tradio= form.AddNewRadioButton(form, 'tradio', 'dosya');
+  tradio.isChecked=True;
+  form.run;
+}
+
+
+//9 
+var
+MyForm : TclForm;
+thscroll :TCLHorzScrollBox ;
+tvscroll:TCLVertScrollBox;
+txbutton,tybutton: TCLButton;
+i : Integer;
+{
+  MyForm= TclForm.Create(self);
+  thscroll=MyForm.AddNewHorzScrollBox(MyForm,'thscroll');
+  thscroll.align=alMostTop;
+  thscroll.height=Tform(Myform).clientheight/4;
+  
+  tvscroll=Myform.AddNewVertScrollBox(MyForm,'tvscroll');
+  tvscroll.align=alMostTop// hizzalayarak ekliyor
+  
+  tvscroll.height=Tform(Myform).clientheight/2;
+
+  
+  for (i=1 to 15)
+  {
+    txbutton=MyForm.AddNewButton(thscroll,'xbuton'+IntToStr(i), IntToStr(i)+'.xbuton');
+    txbutton.align=alLeft;
+    txbutton.height=100;
+    txbutton.styledsettings=ssFamily;
+   
+  }
+  
+  for (i=1 to 15)
+  {
+    tybutton=MyForm.AddNewButton(tvscroll,'ybuton'+IntToStr(i), IntToStr(i)+'.ybuton');
+    tybutton.align=alTop;
+    tybutton.height=100;
+    tybutton.styledsettings=ssFamily;
+  }
+  
+    MyForm.run;
+}
+
+
+//12 günleri açılır pencere ile gösterme TCLComboBox
+var 
+MyForm:TclForm;
+tcombo:TCLComboBox;
+i:Integer;
+void hava
+{
+  if (tcombo.ItemIndex == 5)
+  {
+    ShowMessage('güneşli');
+  }
+  else
+  {
+    ShowMessage('bulutlu');
+  }
+}
+{
+  MyForm=TclForm.Create(self);
+  tcombo=MyForm.AddNewComboBox(MyForm, 'tcombo');
+  tcombo.align=altop;
+  tcombo.width=100;
+  tcombo.margins.top=20;
+  
+  tcombo.additem('pazartesi','1');
+  tcombo.addItem('salı','2');
+  tcombo.addItem('çarşamba','3');
+  tcombo.addItem('perşembe','4');
+  tcombo.addItem('cuma','5');
+  tcombo.addItem('cumartesi','6'); 
+  tcombo.addItem('pazar','7');
+  
+  MyForm.AddNewEvent(tcombo,tbeOnChange,'hava');
+     
+     MyForm.run
+}
+
+ 
+// HATA HATA HATA
+//13  TCLListView listedeki ögeleri hem arayıp hem kaydırma
+var 
+MyForm:TclForm;
+tlistview: TCLListView;
+{
+  MyForm=TclForm.Create(self);
+  
+  tlistview=MyForm.AddNewListView(MyForm,'tlistview');
+  tlistview.align=alClient;
+  |
+  |
+  |    HATAYI VERİYİ ALIRKEN YAPIYORMUŞ
+  |
+  V
+ tlistview.clLoadListViewDataFromDataset(Clomosy.clDataSetFromJSON('[
+   {"MAIN_TEXT": "deneme1","FOOTER_TEXT” : "20"},
+   {"MAIN_TEXT": "deneme3","FOOTER_TEXT” : "20"},
+   {"MAIN_TEXT": "deneme2","FOOTER_TEXT” : "20"} ]'));
+  MyForm.Run;
+}
+
+
+// 14 TCLTimer kronometre yapıyoruz 
+var 
+MyForm:TclForm;
+startb,stopb:TCLButton;
+time: TCLTimer;
+tlabel: TCLLabel;
+zaman,saniye,salise:Integer;
+void start
+{
+  time.Enabled = True;
+}
+void stop
+{
+  time.Enabled = False;
+}
+void show
+{ Inc(zaman); /// sou varr ben bu kodun 0.1 saniyede döndüğünü nerden anladımm kod her 0.1 saniyede buraya ulaşıyor o yüzden 100 e değil 10 bölüyoruz
+  salise = zaman mod 10;
+  saniye =zaman div 10 ;
+  tlabel.caption= IntToStr(saniye)+':'+IntToStr(salise);
+}
+{
+zaman =0;
+  MyForm=TclForm.Create(self);
+  
+  time=MyForm.AddNewTimer(MyForm,'time', 100);
+  MyForm.AddNewEvent(time,tbeOnTimer,'show');
+  
+  tlabel= MyForm.AddNewLabel(MyForm,'tlabel','');
+  tlabel.align=alCenter;
+  
+  
+  
+  startb=MyForm.AddNewButton(MyForm,'startb', 'start');
+  startb.margins.right=200;
+  MyForm.AddNewEvent(startb,tbeOnClick,'start');
+  
+  stopb=MyForm.AddNewButton(MyForm,'stopb', 'stop');
+  stopb.margins.left=200;
+  MyForm.AddNewEvent(stopb,tbeOnClick,'stop');
+  
+  MyForm.Run;}
+  
+
+//15 TCLChart grafik yapıyoruz
+var 
+MyForm:TclForm;
+tchart:TCLChart;
+{
+  MyForm=TclForm.Create(self);
+  tchart=MyForm.AddNewChart(MyForm,'tchart', '');
+  tchart.charttitle='boy ';
+  tchart.charttype=clCPie;
+  tchart.xaxisText ='name';
+  tchart.chartitemtext='boylar:';
+  tchart.chartitemsvalue='boy';
+  tchart.width=300;
+  tchart.height=300;
+  tchart.align=alCenter;
+  tchart.clLoadDataFromJSONStr('[
+  {"name":"aslı","boy":"150","color":"clOrange"},
+  {"name":"merve","boy":"190","color":"clpink"}
+  
+  ]')
+  MyForm.Run;
+}
+
+
+// 16 Qr yapma
+var 
+MyForm:TclForm;
+tqr:TCLQRCodeGenerator;
+buton : TCLButton;
+void qrsorun
+{
+  tqr.text='yio yokk bir daha dene';
+  buton.caption=tqr.text;
+}
+{
+  MyForm=TclForm.Create(self);
+  tqr=MyForm.AddNewQRCodeGenerator(MyForm,'tqr', 'seni seviyorum');
+  tqr.width=200;
+  tqr.height=200;
+  tqr.align=alTop ;
+  
+  buton= MyForm.AddNewButton(MyForm, 'xName', 'qrda sorun mu var?');
+  buton.width=200;
+  buton.height=100;
+  buton.align=alCenter;
+  MyForm.AddNewEvent(buton,tbeOnClick,'qrsorun');
+  MyForm.run;
+}
+
+// 19 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
